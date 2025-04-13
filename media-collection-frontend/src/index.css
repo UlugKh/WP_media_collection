@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.media-card input[type='checkbox'] {
+  margin-right: 0.5rem;
+}
