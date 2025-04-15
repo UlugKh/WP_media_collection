@@ -1,5 +1,41 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getMediaById, updateMedia } from '../services/Api';
+import MediaForm from '../components/MediaForm';
+
 const EditMediaPage = () => {
-  return <h1>Edit Media Page</h1>;
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [mediaData, setMediaData] = useState(null);
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const response = await getMediaById(id);
+        setMediaData(response.data);
+      } catch (err) {
+        console.error('Error fetching media:', err);
+      }
+    };
+
+    fetchMedia();
+  }, [id]);
+
+  const handleUpdate = async (updatedData) => {
+    try {
+      await updateMedia(id, updatedData);
+      navigate('/');
+    } catch (err) {
+      console.error('Error updating media:', err);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Edit Media</h2>
+      {mediaData && <MediaForm onSubmit={handleUpdate} initialData={mediaData} />}
+    </div>
+  );
 };
 
 export default EditMediaPage;

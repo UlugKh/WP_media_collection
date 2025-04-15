@@ -8,9 +8,9 @@ export const getAllMedia = () => api.get('/media');
 
 export const getMediaById = (id) => api.get(`/media/${id}`);
 
-export const createMedia = (mediaData) => api.post('/media', mediaData);
+export const createMedia = (data) => api.post('/media', data);
 
-export const updateMedia = (id, mediaData) => api.put(`/media/${id}`, mediaData);
+export const updateMedia = (id, data) => api.put(`/media/${id}`, data);
 
 export const deleteMedia = (id) => api.delete(`/media/${id}`);
 
