@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MediaCard from '../components/MediaCard';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
@@ -42,8 +43,10 @@ const HomePage = () => {
     setMediaList(prev => prev.filter(item => item.id !== id));
   };
 
+  const navigate = useNavigate();
+
   const handleEdit = (id) => {
-    console.log("Edit media with ID:", id);
+      navigate(`/edit/${id}`);
   };
 
   useEffect(() => {
