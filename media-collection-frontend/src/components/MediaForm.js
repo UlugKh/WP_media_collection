@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const MediaForm = ({ onSubmit, initialData = {} }) => {
   const [title, setTitle] = useState(initialData.title || "");
-  const [type, setType] = useState(initialData.type || "media");
+  const [type, setType] = useState(initialData.type || "book");
   const [status, setStatus] = useState(initialData.status || "not went through");
+
+  useEffect(() => {
+    if (initialData.status) {
+      setStatus(initialData.status);
+    } else {
+      setStatus(type === 'book' ? 'not read' : 'not watched');
+    }
+  }, [type, initialData.status]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

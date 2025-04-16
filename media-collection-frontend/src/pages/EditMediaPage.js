@@ -9,25 +9,40 @@ const EditMediaPage = () => {
   const [mediaData, setMediaData] = useState(null);
 
   useEffect(() => {
+//    const fetchMedia = async () => {
+//      try {
+//        const response = await getMediaById(id);
+//        setMediaData(response.data);
+//      } catch (err) {
+//        console.error('Error fetching media:', err);
+//      }
+//    };
+
     const fetchMedia = async () => {
-      try {
-        const response = await getMediaById(id);
-        setMediaData(response.data);
-      } catch (err) {
-        console.error('Error fetching media:', err);
-      }
+      const saved = JSON.parse(localStorage.getItem('media')) || [];
+      const item = saved.find(m => m.id === Number(id));
+      if (item) setMediaData(item);
     };
 
     fetchMedia();
   }, [id]);
 
+//  const handleUpdate = async (updatedData) => {
+//    try {
+//      await updateMedia(id, updatedData);
+//      navigate('/');
+//    } catch (err) {
+//      console.error('Error updating media:', err);
+//    }
+//  };
+
   const handleUpdate = async (updatedData) => {
-    try {
-      await updateMedia(id, updatedData);
-      navigate('/');
-    } catch (err) {
-      console.error('Error updating media:', err);
-    }
+    const existing = JSON.parse(localStorage.getItem('media')) || [];
+    const updated = existing.map(m =>
+        m.id === Number(id) ? { ...m, ...updatedData } : m
+    );
+    localStorage.setItem('media', JSON.stringify(updated));
+    navigate('/');
   };
 
   return (
