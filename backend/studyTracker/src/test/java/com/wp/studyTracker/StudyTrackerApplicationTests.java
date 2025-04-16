@@ -1,10 +1,10 @@
-package com.WP.task_manager;
+package com.wp.studyTracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TaskManagerApplicationTests {
+class StudyTrackerApplicationTests {
 
 	@Test
 	void contextLoads() {

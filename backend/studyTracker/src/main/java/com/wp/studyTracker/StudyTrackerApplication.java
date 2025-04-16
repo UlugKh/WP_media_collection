@@ -1,13 +1,13 @@
-package com.WP.task_manager;
+package com.wp.studyTracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TaskManagerApplication {
+public class StudyTrackerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaskManagerApplication.class, args);
+		SpringApplication.run(StudyTrackerApplication.class, args);
 	}
 
 }
