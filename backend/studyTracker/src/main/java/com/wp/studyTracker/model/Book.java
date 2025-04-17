@@ -1,4 +1,4 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

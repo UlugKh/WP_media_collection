@@ -1,4 +1,4 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,22 +7,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "shows")
-@AllArgsConstructor //for constructor for all params
-@NoArgsConstructor //for constructor for no params
-public class Show {
+@Document(collection = "mangas")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Manga {
     @Id
     private String id;
 
-    private String imdbId;
+    private String malId;
     private String title;
     private String releaseDate;
-    private String trailerLink;
     private List<String> genres;
     private String poster;
     private List<String> backdrops;
+    private int amountOfChapters;
+    private int amountOfVolumes;
     private List<String> reviewIds;
-    private String type;
 
     public String getId() {
         return id;
@@ -32,12 +32,12 @@ public class Show {
         this.id = id;
     }
 
-    public String getImdbId() {
-        return imdbId;
+    public String getMalId() {
+        return malId;
     }
 
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
+    public void setMalId(String malId) {
+        this.malId = malId;
     }
 
     public String getTitle() {
@@ -54,14 +54,6 @@ public class Show {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
-    }
-
-    public String getTrailerLink() {
-        return trailerLink;
-    }
-
-    public void setTrailerLink(String trailerLink) {
-        this.trailerLink = trailerLink;
     }
 
     public List<String> getGenres() {
@@ -88,6 +80,22 @@ public class Show {
         this.backdrops = backdrops;
     }
 
+    public int getAmountOfChapters() {
+        return amountOfChapters;
+    }
+
+    public void setAmountOfChapters(int amountOfChapters) {
+        this.amountOfChapters = amountOfChapters;
+    }
+
+    public int getAmountOfVolumes() {
+        return amountOfVolumes;
+    }
+
+    public void setAmountOfVolumes(int amountOfVolumes) {
+        this.amountOfVolumes = amountOfVolumes;
+    }
+
     public List<String> getReviewIds() {
         return reviewIds;
     }
@@ -95,12 +103,5 @@ public class Show {
     public void setReviewIds(List<String> reviewIds) {
         this.reviewIds = reviewIds;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }
+

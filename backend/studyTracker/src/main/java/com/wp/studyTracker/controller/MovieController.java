@@ -1,6 +1,7 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.controller;
 
-import org.bson.types.ObjectId;
+import com.wp.studyTracker.service.MovieService;
+import com.wp.studyTracker.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v2/movies")
-public class MovieController {
+public class MovieController{
     @Autowired
     private MovieService movieService;
 

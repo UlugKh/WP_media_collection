@@ -1,6 +1,7 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.service;
 
-import org.bson.types.ObjectId;
+import com.wp.studyTracker.model.Movie;
+import com.wp.studyTracker.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
