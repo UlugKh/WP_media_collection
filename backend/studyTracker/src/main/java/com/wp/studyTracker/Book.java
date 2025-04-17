@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor //for constructor for all params
 @NoArgsConstructor //for constructor for no params
 public class Book {
-
     @Id
     private String id;
 
