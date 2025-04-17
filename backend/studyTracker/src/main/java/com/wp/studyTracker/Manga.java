@@ -7,21 +7,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "books")
-@AllArgsConstructor //for constructor for all params
-@NoArgsConstructor //for constructor for no params
-public class Book {
+@Document(collection = "mangas")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Manga {
     @Id
     private String id;
 
-    private String isbn;
+    private String malId;
     private String title;
-    private String author;
-    private String publishedDate;
+    private String releaseDate;
     private List<String> genres;
-    private String coverImage;
-    private String description;
+    private String poster;
     private List<String> backdrops;
+    private int amountOfChapters;
+    private int amountOfVolumes;
     private List<String> reviewIds;
 
     public String getId() {
@@ -32,12 +32,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getMalId() {
+        return malId;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setMalId(String malId) {
+        this.malId = malId;
     }
 
     public String getTitle() {
@@ -48,20 +48,12 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public List<String> getGenres() {
@@ -72,20 +64,12 @@ public class Book {
         this.genres = genres;
     }
 
-    public String getCoverImage() {
-        return coverImage;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public List<String> getBackdrops() {
@@ -96,6 +80,22 @@ public class Book {
         this.backdrops = backdrops;
     }
 
+    public int getAmountOfChapters() {
+        return amountOfChapters;
+    }
+
+    public void setAmountOfChapters(int amountOfChapters) {
+        this.amountOfChapters = amountOfChapters;
+    }
+
+    public int getAmountOfVolumes() {
+        return amountOfVolumes;
+    }
+
+    public void setAmountOfVolumes(int amountOfVolumes) {
+        this.amountOfVolumes = amountOfVolumes;
+    }
+
     public List<String> getReviewIds() {
         return reviewIds;
     }
@@ -104,3 +104,4 @@ public class Book {
         this.reviewIds = reviewIds;
     }
 }
+

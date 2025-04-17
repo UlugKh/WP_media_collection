@@ -7,22 +7,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "books")
+@Document(collection = "shows")
 @AllArgsConstructor //for constructor for all params
 @NoArgsConstructor //for constructor for no params
-public class Book {
+public class Show {
     @Id
     private String id;
 
-    private String isbn;
+    private String imdbId;
     private String title;
-    private String author;
-    private String publishedDate;
+    private String releaseDate;
+    private String trailerLink;
     private List<String> genres;
-    private String coverImage;
-    private String description;
+    private String poster;
     private List<String> backdrops;
     private List<String> reviewIds;
+    private String type;
 
     public String getId() {
         return id;
@@ -32,12 +32,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getImdbId() {
+        return imdbId;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
     }
 
     public String getTitle() {
@@ -48,20 +48,20 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public String getPublishedDate() {
-        return publishedDate;
+    public String getTrailerLink() {
+        return trailerLink;
     }
 
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
     }
 
     public List<String> getGenres() {
@@ -72,20 +72,12 @@ public class Book {
         this.genres = genres;
     }
 
-    public String getCoverImage() {
-        return coverImage;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public List<String> getBackdrops() {
@@ -102,5 +94,13 @@ public class Book {
 
     public void setReviewIds(List<String> reviewIds) {
         this.reviewIds = reviewIds;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
