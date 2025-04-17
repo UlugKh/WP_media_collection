@@ -1,5 +1,6 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.repository;
 
+import com.wp.studyTracker.model.Book;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
