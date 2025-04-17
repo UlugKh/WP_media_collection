@@ -1,5 +1,7 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.service;
 
+import com.wp.studyTracker.model.Book;
+import com.wp.studyTracker.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

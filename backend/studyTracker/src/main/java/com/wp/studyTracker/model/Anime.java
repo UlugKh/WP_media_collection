@@ -1,4 +1,4 @@
-package com.wp.studyTracker;
+package com.wp.studyTracker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ import java.util.List;
 public class Anime {
     @Id
     private ObjectId id;
+
     private int malId;
     private String title;
     private String releaseDate;
