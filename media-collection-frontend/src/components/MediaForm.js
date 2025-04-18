@@ -15,7 +15,10 @@ const MediaForm = ({ onSubmit, initialData = {} }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ title, type, status });
+
+    const finalStatus = status || (type === 'book' || type === 'manga' ? 'not read' : 'not watched');
+
+    onSubmit({ title, type, status: finalStatus });
   };
 
   return (
@@ -28,12 +31,15 @@ const MediaForm = ({ onSubmit, initialData = {} }) => {
       <select value={type} onChange={e => setType(e.target.value)}>
         <option value="book">Book</option>
         <option value="movie">Movie</option>
+        <option value="anime">Anime</option>
+        <option value="manga">Manga</option>
+        <option value="show">Show</option>
       </select>
       <select value={status} onChange={e => setStatus(e.target.value)}>
-         {type === 'book' ? (
+         {type === 'book' || type === 'manga'? (
             <>
-                <option value="read">Read</option>
                 <option value="not read">Not Read</option>
+                <option value="read">Read</option>
             </>
           ) : (
             <>

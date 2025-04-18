@@ -1,65 +1,23 @@
-const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
-  const { id, title, type, status } = media;
+const MediaCard = ({ media, onToggleStatus, onDelete, onEdit, onCommentChange }) => {
+  const { id, title, type, status, comment = '' } = media;
 
-  // Setup type-specific configurations
-  const typeConfig = {
-    book: {
-      icon: '📖',
-      readStatus: 'read',
-      unreadStatus: 'not read',
-      bgColor: '#e0f7fa',
-      label: 'Read',
-    },
-    movie: {
-      icon: '🎬',
-      readStatus: 'watched',
-      unreadStatus: 'not watched',
-      bgColor: '#fff3e0',
-      label: 'Watched',
-    },
-    anime: {
-      icon: '🍥',
-      readStatus: 'watched',
-      unreadStatus: 'not watched',
-      bgColor: '#e8eaf6',
-      label: 'Watched',
-    },
-    manga: {
-      icon: '📚',
-      readStatus: 'read',
-      unreadStatus: 'not read',
-      bgColor: '#f3e5f5',
-      label: 'Read',
-    },
-    show: {
-      icon: '📺',
-      readStatus: 'watched',
-      unreadStatus: 'not watched',
-      bgColor: '#ede7f6',
-      label: 'Watched',
-    }
-  };
-
-  console.log("Detected media type:", type);
-
-
-  const config = typeConfig[type] || {
-    icon: '📦',
-    readStatus: 'done',
-    unreadStatus: 'not done',
-    bgColor: '#eeeeee',
-    label: 'Done',
-  };
-
-  const isMarked = status === config.readStatus;
+  const isBookOrManga = type === 'book' || type === 'manga';
+  const isMarked = status === 'watched' || status === 'read';
 
   const handleStatusChange = () => {
-    const newStatus = isMarked ? config.unreadStatus : config.readStatus;
+    const newStatus = isMarked
+      ? isBookOrManga ? 'not read' : 'not watched'
+      : isBookOrManga ? 'read' : 'watched';
+
     onToggleStatus(id, newStatus);
   };
 
+  const handleCommentInput = (e) => {
+    onCommentChange?.(id, e.target.value);
+  };
+
   const cardStyle = {
-    backgroundColor: config.bgColor,
+    backgroundColor: isBookOrManga ? '#e0f7fa' : '#fff3e0',
     border: '1px solid #ccc',
     padding: '1rem',
     margin: '1rem 0',
@@ -68,9 +26,11 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
 
   return (
     <div className="media-card" style={cardStyle}>
-      <h3>{config.icon} {title}</h3>
+      <h3>
+        {type === 'book' || type === 'manga' ? '📖' : '🎬'} {title}
+      </h3>
       <p>Type: {type}</p>
-      <p>Status: {status}</p>
+      <p>Status: {status || 'Not set'}</p>
 
       <label>
         <input
@@ -78,8 +38,18 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
           checked={isMarked}
           onChange={handleStatusChange}
         />
-        Mark as {config.label}
+        Mark as {isBookOrManga ? 'Read' : 'Watched'}
       </label>
+
+      <div style={{ marginTop: '1rem' }}>
+        <textarea
+          placeholder="Add a comment..."
+          value={comment}
+          onChange={handleCommentInput}
+          rows={2}
+          style={{ width: '100%', padding: '0.5rem' }}
+        />
+      </div>
 
       <div style={{ marginTop: '0.5rem' }}>
         <button onClick={() => onEdit?.(id)}>Edit</button>{' '}
@@ -90,3 +60,4 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
 };
 
 export default MediaCard;
+
