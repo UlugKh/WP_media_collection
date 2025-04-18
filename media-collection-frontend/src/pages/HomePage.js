@@ -3,35 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import MediaCard from '../components/MediaCard';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
-import { getAllMedia, updateMedia } from '../services/Api';
 
 const HomePage = () => {
-  const [mediaList, setMediaList] = useState([]); // Will fetch from backend later
+  const [mediaList, setMediaList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({ type: [], status: '' });
 
   const navigate = useNavigate();
 
-  const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
-  };
-
-  const handleToggleStatus = (id, newStatus) => {
-    // Temporarily just update state until PUT is ready
+  // Handle comment changes
+  const handleCommentChange = (id, newComment) => {
     const updatedList = mediaList.map(item =>
-      item.id === id ? { ...item, status: newStatus } : item
+      item.id === id ? { ...item, comment: newComment } : item
     );
     setMediaList(updatedList);
+    localStorage.setItem('userMedia', JSON.stringify(updatedList));
   };
 
   const handleDelete = (id) => {
     const updated = mediaList.filter(item => item.id !== id);
     setMediaList(updated);
+    localStorage.setItem('userMedia', JSON.stringify(updated));
   };
 
+  const handleToggleStatus = (id, newStatus) => {
+    const updatedList = mediaList.map(item =>
+      item.id === id ? { ...item, status: newStatus } : item
+    );
+    setMediaList(updatedList);
+    localStorage.setItem('userMedia', JSON.stringify(updatedList));
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/edit/${id}`);
+  };
+
+  // Filter logic
   useEffect(() => {
-    let result = mediaList;
+    let result = [...mediaList];
 
     if (searchTerm) {
       result = result.filter((item) =>
@@ -50,29 +60,12 @@ const HomePage = () => {
     setFilteredList(result);
   }, [searchTerm, filters, mediaList]);
 
+  // Load from localStorage on mount
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getAllMedia();
-        const { books = [], movies = [], shows = [], mangas = [], animes = [] } = response.data;
-
-        // Add type to each item
-        const typedBooks = books.map(item => ({ ...item, type: 'book', id: item.id || item._id}));
-        const typedMovies = movies.map(item => ({ ...item, type: 'movie', id: item.id || item._id }));
-        const typedShows = shows.map(item => ({ ...item, type: 'show', id: item.id || item._id }));
-        const typedMangas = mangas.map(item => ({ ...item, type: 'manga', id: item.id || item._id }));
-        const typedAnimes = animes.map(item => ({ ...item, type: 'anime', id: item.id || item._id }));
-
-        // Combine everything into one array
-        const combinedMedia = [...typedBooks, ...typedMovies, ...typedShows, ...typedMangas, ...typedAnimes];
-
-        setMediaList(combinedMedia);
-      } catch (error) {
-        console.error('Error fetching media:', error);
-      }
-    };
-
-    fetchData();
+    const saved = localStorage.getItem('userMedia');
+    if (saved) {
+      setMediaList(JSON.parse(saved));
+    }
   }, []);
 
   return (
@@ -83,11 +76,12 @@ const HomePage = () => {
       <div className="media-list">
         {filteredList.map((media) => (
           <MediaCard
-            key={media.id}
+            key={media.id + media.title}
             media={media}
             onDelete={handleDelete}
             onEdit={handleEdit}
             onToggleStatus={handleToggleStatus}
+            onCommentChange={handleCommentChange}
           />
         ))}
       </div>
