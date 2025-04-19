@@ -1,23 +1,23 @@
-const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
-  const { id, title, type, status } = media;
+const MediaCard = ({ media, onToggleStatus, onDelete, onEdit, onCommentChange }) => {
+  const { id, title, type, status, comment = '' } = media;
 
-  // Determine labels and next toggle state based on type
-  const isBook = type === 'book';
-  const isMovie = type === 'movie';
-
+  const isBookOrManga = type === 'book' || type === 'manga';
   const isMarked = status === 'watched' || status === 'read';
 
   const handleStatusChange = () => {
     const newStatus = isMarked
-      ? isBook ? 'not read' : 'not watched'
-      : isBook ? 'read' : 'watched';
+      ? isBookOrManga ? 'not read' : 'not watched'
+      : isBookOrManga ? 'read' : 'watched';
 
     onToggleStatus(id, newStatus);
   };
 
-  // Optional styling (customize later in CSS or styled-components)
+  const handleCommentInput = (e) => {
+    onCommentChange?.(id, e.target.value);
+  };
+
   const cardStyle = {
-    backgroundColor: isBook ? '#e0f7fa' : '#fff3e0',
+    backgroundColor: isBookOrManga ? '#e0f7fa' : '#fff3e0',
     border: '1px solid #ccc',
     padding: '1rem',
     margin: '1rem 0',
@@ -27,10 +27,10 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
   return (
     <div className="media-card" style={cardStyle}>
       <h3>
-        {isBook ? '📖' : '🎬'} {title}
+        {type === 'book' || type === 'manga' ? '📖' : '🎬'} {title}
       </h3>
       <p>Type: {type}</p>
-      <p>Status: {status}</p>
+      <p>Status: {status || 'Not set'}</p>
 
       <label>
         <input
@@ -38,8 +38,18 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
           checked={isMarked}
           onChange={handleStatusChange}
         />
-        Mark as {isBook ? 'Read' : 'Watched'}
+        Mark as {isBookOrManga ? 'Read' : 'Watched'}
       </label>
+
+      <div style={{ marginTop: '1rem' }}>
+        <textarea
+          placeholder="Add a comment..."
+          value={comment}
+          onChange={handleCommentInput}
+          rows={2}
+          style={{ width: '100%', padding: '0.5rem' }}
+        />
+      </div>
 
       <div style={{ marginTop: '0.5rem' }}>
         <button onClick={() => onEdit?.(id)}>Edit</button>{' '}
@@ -50,3 +60,4 @@ const MediaCard = ({ media, onToggleStatus, onDelete, onEdit }) => {
 };
 
 export default MediaCard;
+

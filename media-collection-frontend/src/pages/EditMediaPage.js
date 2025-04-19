@@ -23,7 +23,7 @@ const EditMediaPage = () => {
 
   const handleUpdate = async (updatedData) => {
     try {
-      await updateMedia(id, updatedData);
+      await updateMedia(id, updatedData); // This works when PUT is ready
       navigate('/');
     } catch (err) {
       console.error('Error updating media:', err);
@@ -33,7 +33,11 @@ const EditMediaPage = () => {
   return (
     <div>
       <h2>Edit Media</h2>
-      {mediaData && <MediaForm onSubmit={handleUpdate} initialData={mediaData} />}
+      {mediaData ? (
+        <MediaForm onSubmit={handleUpdate} initialData={mediaData} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
