@@ -26,17 +26,16 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home", "/register/**").permitAll();
+                    registry.requestMatchers("/", "/home", "/register/**", "/css/**", "/js/**").permitAll();
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/user/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
-                .formLogin(httpSecurityFormLoginConfigurer -> {
-                    httpSecurityFormLoginConfigurer
-                            .loginPage("/login")
-                            .successHandler(new AuthenticationSuccessHandler())
-                            .permitAll();
-                })
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(new AuthenticationSuccessHandler() )
+                        .permitAll()
+                )
                 .build();
     }
 
