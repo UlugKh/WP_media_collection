@@ -1,5 +1,6 @@
 package com.wp.studyTracker;
 
+
 import com.wp.studyTracker.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -26,16 +28,18 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/", "/home", "/register/**", "/css/**", "/js/**").permitAll();
+                    registry.requestMatchers("/api/**").permitAll();
+                    registry.requestMatchers("/home", "/register/**").permitAll();
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/user/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .successHandler(new AuthenticationSuccessHandler() )
-                        .permitAll()
-                )
+                .formLogin(httpSecurityFormLoginConfigurer -> {
+                    httpSecurityFormLoginConfigurer
+                            .loginPage("/login")
+                            .successHandler(new AuthenticationSuccessHandler())
+                            .permitAll();
+                })
                 .build();
     }
 
