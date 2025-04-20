@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ContentController {
 
-    @GetMapping("/home")
+    @GetMapping("")
     public String handleWelcome() {
         return "home";
     }
-
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // This resolves to login.html in templates
+    }
     @GetMapping("/admin/home")
     public String handleAdminHome() {
         return "home_admin";
@@ -18,11 +21,6 @@ public class ContentController {
     @GetMapping("/user/home")
     public String handleUserHome() {
         return "home_user";
-    }
-
-    @GetMapping("/login")
-    public String handleLogin() {
-        return "custom_login";
     }
     @GetMapping("/register")
     public String handleRegisterPage() {
