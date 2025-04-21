@@ -1,19 +1,18 @@
 package com.wp.studyTracker;
 
-
 import com.wp.studyTracker.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -27,20 +26,19 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults()) // ← Enable CORS support
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/").permitAll();
-                    registry.requestMatchers("/api/**").permitAll();
-                    registry.requestMatchers("/home", "/register/**").permitAll();
+                    registry.requestMatchers("/", "/home", "/register/**", "/css/**", "/js/**").permitAll();
+                    registry.requestMatchers("/api/v2/media/**").permitAll();
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/user/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
-                .formLogin(httpSecurityFormLoginConfigurer -> {
-                    httpSecurityFormLoginConfigurer
-                            .loginPage("/login")
-                            .successHandler(new AuthenticationSuccessHandler())
-                            .permitAll();
-                })
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(new AuthenticationSuccessHandler())
+                        .permitAll()
+                )
                 .build();
     }
 

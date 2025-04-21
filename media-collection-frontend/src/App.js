@@ -6,6 +6,7 @@ import AddMediaPage from './pages/AddMediaPage';
 import EditMediaPage from './pages/EditMediaPage';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
+import MediaDetailPage from './pages/MediaDetailPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/add" element={<AddMediaPage />} />
         <Route path="/edit/:id" element={<EditMediaPage />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/media/:type/:id" element={<MediaDetailPage />} />
       </Routes>
     </>
   );

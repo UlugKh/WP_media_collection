@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllMedia } from '../services/Api';
+import { getAllMedia, createMedia } from '../services/Api';
 
 const AddMediaPage = () => {
   const [allMedia, setAllMedia] = useState([]);
+  const [userMedia, setUserMedia] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [comments, setComments] = useState({});
   const navigate = useNavigate();
@@ -11,8 +12,11 @@ const AddMediaPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllMedia();
-        const { books = [], movies = [], shows = [], mangas = [], animes = [] } = response.data;
+        const [mediaRes, userMediaRes] = await Promise.all([
+          getAllMedia()
+        ]);
+
+        const { books = [], movies = [], shows = [], mangas = [], animes = [] } = mediaRes.data;
 
         const withType = (items, type) =>
           items.map(item => ({
@@ -26,23 +30,22 @@ const AddMediaPage = () => {
           ...withType(movies, 'movie'),
           ...withType(shows, 'show'),
           ...withType(mangas, 'manga'),
-          ...withType(animes, 'anime')
+          ...withType(animes, 'anime'),
         ];
 
         setAllMedia(combined);
+        setUserMedia(userMediaRes.data || []);
       } catch (error) {
-        console.error('Error fetching media:', error);
+        console.error('Error loading media:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  const handleAdd = (media) => {
-    const userMedia = JSON.parse(localStorage.getItem('userMedia')) || [];
-
-    // Avoid adding duplicates
-    if (userMedia.find(item => item.id === media.id)) {
+  const handleAdd = async (media) => {
+    const alreadyAdded = userMedia.find(item => item.id === media.id);
+    if (alreadyAdded) {
       alert("This item is already in your collection.");
       return;
     }
@@ -50,12 +53,17 @@ const AddMediaPage = () => {
     const itemToAdd = {
       ...media,
       comment: comments[media.id] || '',
-      status: media.type === 'book' || media.type === 'manga' ? 'not read' : 'not watched'
+      status: media.type === 'book' || media.type === 'manga' ? 'not read' : 'not watched',
     };
 
-    const updated = [...userMedia, itemToAdd];
-    localStorage.setItem('userMedia', JSON.stringify(updated));
-    navigate('/');
+    try {
+      await createMedia(itemToAdd);
+      alert('Added to your collection!');
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to add item:', error);
+      alert('Something went wrong while adding the item.');
+    }
   };
 
   const handleCommentChange = (id, text) => {
@@ -81,12 +89,15 @@ const AddMediaPage = () => {
 
       <div className="media-list">
         {filtered.map((media) => (
-          <div key={media.id + media.title} style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            padding: '1rem',
-            marginBottom: '1rem',
-          }}>
+          <div
+            key={media.id + media.title}
+            style={{
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              padding: '1rem',
+              marginBottom: '1rem',
+            }}
+          >
             <h3>{media.title} ({media.type})</h3>
             <textarea
               rows={2}
