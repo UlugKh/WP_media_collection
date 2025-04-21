@@ -28,6 +28,11 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults()) // ← Enable CORS support
                 .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers("/api/v2/mangas/**").permitAll();
+                    registry.requestMatchers("/api/v2/animes/**").permitAll();
+                    registry.requestMatchers("/api/v2/movies/**").permitAll();
+                    registry.requestMatchers("/api/v2/books/**").permitAll();
+                    registry.requestMatchers("/api/v2/shows/**").permitAll();
                     registry.requestMatchers("/", "/home", "/register/**", "/css/**", "/js/**").permitAll();
                     registry.requestMatchers("/api/v2/media/**").permitAll();
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
