@@ -1,5 +1,9 @@
 .navbar{
     align-items: center;
+    height: 10vh;
+    margin: 0;
+    position: sticky;
+    top: 0;
 }
 .container{
     margin:0;
@@ -51,4 +55,8 @@ a{
     margin : 0;
     border-radius: 5px;
     border : 1px solid black;
+}
+
+.AddMediaBtn{
+    margin-right: 15px;
 }

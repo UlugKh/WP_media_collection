@@ -9,6 +9,7 @@ const Navbar = () => {
         <Link to="/"><button className="Register Home">Home</button></Link>
         </div>
         <div className="container-left">
+          <Link to="/About" className="AddMediaBtn">About us</Link>
           <Link to="/add" className="AddMediaBtn"> Add Media</Link>
           <Link to="">
             <button className="Register Login">Login</button>
