@@ -1,6 +1,17 @@
 {
   "files": [],
-  "references": [
+
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "react",
+    "checkJs": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+  "include": ["src"],
+
+
+"references": [
     {
       "path": "./tsconfig.app.json"
     },

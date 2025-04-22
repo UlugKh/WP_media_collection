@@ -11,6 +11,7 @@ const Navbar = () => {
         { label: "Subscriptions", path: "/subscriptions" },
     ];
 
+
     return (
         <div className="relative flex items-center justify-center w-full h-[120px] bg-black">
             {/* Center pill-shaped nav container */}
