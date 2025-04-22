@@ -1,5 +1,5 @@
 .navbar {
-    background-color: brown;
+    background-color: aliceblue;
     display: flex;
     align-items: center;
     height: 10vh;
@@ -23,7 +23,7 @@
     gap: 1rem;
 }
 
-/* Links */
+
 a {
     text-decoration: none;
     font-size: 16px;
