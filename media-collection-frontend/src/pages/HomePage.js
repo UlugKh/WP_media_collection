@@ -73,15 +73,21 @@ const HomePage = () => {
                         onClick={() => scroll('left')}
                         style={{
                             position: 'absolute',
-                            left: 0,
                             top: '35%',
                             zIndex: 10,
-                            background: '#fff',
-                            border: '1px solid #ccc',
+                            backgroundColor: 'rgba(111, 79, 31, 0.7)',
+                            border: '2px solid rgba(210, 180, 140, 0.7)',
                             borderRadius: '50%',
-                            width: '35px',
-                            height: '35px',
+                            width: '40px',
+                            height: '40px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             cursor: 'pointer',
+                            transition: 'background-color 0.3s, transform 0.2s ease-in-out, box-shadow 0.3s',
+                            color: '#fff',
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold',
                         }}
                     >
                         ‹
@@ -172,8 +178,8 @@ const HomePage = () => {
                             right: 0,
                             top: '35%',
                             zIndex: 10,
-                            background: '#fff',
-                            border: '1px solid #ccc',
+                            backgroundColor: 'rgba(111, 79, 31, 0.7)',
+                            border: '2px solid rgba(210, 180, 140, 0.7)',
                             borderRadius: '50%',
                             width: '35px',
                             height: '35px',

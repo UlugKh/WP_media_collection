@@ -3,7 +3,7 @@ import './Navbar.css';
 
 const Navbar = () => {
   return (
-    <nav className="navbar" style={{ padding: "1rem", background: "#f3f3f3" }}>
+    <nav className="navbar" style={{ padding: "1rem" }}>
     <div className="container">
       <div className="container-right">
         <Link to="/"><button className="Register Home">Home</button></Link>
