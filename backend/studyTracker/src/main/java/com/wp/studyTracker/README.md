@@ -1,13 +1,17 @@
-# 📚 My Backend Overview
-
-Hey team! 👋  
-Here's a quick breakdown of how the backend is structured and how everything works behind the scenes. I kept it simple and to-the-point so it's easy to understand and refer back to. Let’s dive in! 🚀
+Absolutely! Here's your updated README with the new changes integrated smoothly, while keeping your original tone and structure:
 
 ---
 
-## 🧱 Overall Structure
+# 📚 My Backend Overview (Updated)
 
-We’re working with **5 main collections** in our MongoDB database:
+Hey team! 👋  
+Here’s an updated breakdown of how the backend works now that we’ve added **users**, **reviews**, and **collection logic**. This is meant to help everyone (especially frontend folks) understand what’s available and how to work with it. Let’s dive in! 🚀
+
+---
+
+## 🧱 Updated Structure
+
+In addition to our original **5 main collections**:
 
 - 📘 `Books`
 - 🎬 `Movies`
@@ -15,88 +19,82 @@ We’re working with **5 main collections** in our MongoDB database:
 - 📖 `Mangas`
 - 🌸 `Animes`
 
-Each collection has **3 layers** of classes tied to it:
+We’ve now added two more:
 
-1. **Repository**
-2. **Service**
-3. **Controller**
+- 👤 `Users`
+- 📝 `Reviews`
 
----
-
-## 🔍 Repository Layer
-
-💡 This layer is where we connect to MongoDB.  
-Each repository interface extends `MongoRepository` (or a similar MongoDB interface depending on the setup).
-
-👉 It allows us to use all the built-in MongoDB commands like:
-
-- `findAll()`
-- `findById(id)`
-- `save()`
-- `deleteById(id)`
-
-Think of this layer as the direct line to the database.
+These new entities introduce **user interaction** with the media, including **leaving reviews** and **managing their personal media collection**.
 
 ---
 
-## 🛠️ Service Layer
+## 🔁 How It All Connects
 
-This is where things get customized! 🔧  
-The service class acts like a middleman between the controller and the database logic.
+### 👤 Users
+- Users can register and have their own:
+    - List of `reviewIds` (the reviews they've submitted)
+    - `collection` (a map of media type → list of media IDs they’ve saved)
+- Example:
+  ```json
+  {
+    "username": "test",
+    "name": "Test",
+    "reviews": ["6567e...", "6577b..."],
+    "collection": {
+      "movies": ["tt4154796"],
+      "books": ["9780143127741"]
+    }
+  }
+  ```
 
-✨ Here’s what I usually do in services:
-
-- Filter or sort results
-- Add extra logic on top of database queries
-- Handle potential errors or edge cases
-- Customize data flow
-
-So if you want to tweak how something is fetched or processed before it gets sent to the client — this is the place.
-
----
-
-## 🌐 Controller Layer
-
-This is the entry point of our API 📡  
-The controller handles all the HTTP requests and responses (like GET, POST, PUT, DELETE).
-
-Here’s what the controller does:
-
-- Calls the right method from the service
-- Wraps the response into a `ResponseEntity<>`
-- Maps endpoints with annotations like `@GetMapping`, `@PostMapping`, etc.
-
-📌 This is also where we handle things like:
-- Query params
-- Path variables
-- Status codes
+### 📝 Reviews
+- Reviews are stored in a separate collection.
+- Each review has a body, and the ID of the media it's related to (`isbn`, `imdbId`, `malId` depending on media type).
+- The media itself stores a **list of review IDs** (`reviewIds`) associated with it.
+- Reviews **are not automatically removed** from media when deleted — that cleanup must be handled manually if needed.
 
 ---
 
-## 🧾 Example Flow (for `Books`)
+## 📡 New Endpoints (General Idea)
 
-Let’s say the client wants a list of all books:
+> 📌 Frontend devs: use Postman or your preferred API client to explore the routes and test requests!  
+> Also check controller files for specifics on input fields for POST requests.
 
-1. 🔁 **Controller** receives a GET request to `/books`
-2. 💬 It calls the `getAllBooks()` method from the **Service**
-3. 🧠 Service does any custom processing (if needed), then calls `findAll()` from the **Repository**
-4. 📤 Data is returned back up to the **Controller**, which wraps it in a `ResponseEntity<List<Book>>`
-5. 🚚 The final result is sent to the client!
+Here’s a high-level of the additions:
+
+### `/users`
+- `POST /users` – Create a new user
+- `GET /users` – Get all users
+- `GET /users/{id}` – Get one user by ID
+- `GET /users/{id}/reviews` – Get all reviews written by the user
+- `GET /users/{id}/collection` – Get the user’s saved media collection
+- `POST /users/{id}/collection/add` – Add a media ID to the user's collection (send mediaType + mediaId in the body)
+
+### `/reviews`
+- `POST /reviews` – Add a review
+    - Requires: `body`, `mediaId`, `mediaType`, `userId`
+- `DELETE /reviews/{id}` – Delete a review
 
 ---
 
-## ✅ Summary
+## ❗ Note
 
-So to keep it simple:
+🔒 The **login**, **authentication**, and other account-level logic are not handled by my part of the backend — so I haven’t documented those. Focus here is on the **review and collection system** and the **media content APIs**.
 
-- **Repository** = raw MongoDB access 🗃️
-- **Service** = custom business logic 🛠️
-- **Controller** = API response control + routing 🌐
+---
 
-If you’re ever unsure where to put a piece of logic:
-- **If it talks directly to the database** → Repository
-- **If it adds logic or filters data** → Service
-- **If it’s about handling requests or responses** → Controller
+## ✅ Summary (Updated)
 
-Hope that helps! Let me know if anything's unclear 😄
+- The app now supports **user interactions** with media:
+    - Saving media (like a personal watchlist or bookshelf)
+    - Writing and linking **reviews** to specific titles
+- Everything still follows the same structure:
+    - **Repository** for DB logic
+    - **Service** for data manipulation or validation
+    - **Controller** for handling requests and responses
+- Check the new endpoints to start plugging in frontend features like:
+    - "Add to My Collection"
+    - "Write a Review"
+    - "Show My Reviews"
 
+Let me know if anything is confusing or if you want sample request bodies to test with! 😄
