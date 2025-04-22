@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllMedia, createMedia } from '../services/Api';
+import { getAllMedia } from '../services/Api';
+import axios from 'axios';
 
 const AddMediaPage = () => {
   const [allMedia, setAllMedia] = useState([]);
-  const [userMedia, setUserMedia] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [comments, setComments] = useState({});
   const navigate = useNavigate();
-
-  const loggedInUserId = localStorage.getItem('loggedInUserId');
+  const userId = localStorage.getItem('loggedInUserId');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const mediaRes = await getAllMedia();
-        const { books = [], movies = [], shows = [], mangas = [], animes = [] } = mediaRes.data;
+        const response = await getAllMedia();
+        const { books = [], movies = [], shows = [], mangas = [], animes = [] } = response.data;
 
         const withType = (items, type) =>
           items.map(item => ({
             ...item,
+            id: item.id || item._id?.$oid || item._id?.toString?.() || item.isbn || item.malId,
             type,
           }));
 
@@ -33,7 +33,7 @@ const AddMediaPage = () => {
 
         setAllMedia(combined);
       } catch (error) {
-        console.error('Error loading media:', error);
+        console.error('Error fetching media:', error);
       }
     };
 
@@ -41,34 +41,71 @@ const AddMediaPage = () => {
   }, []);
 
   const handleAdd = async (media) => {
-    const existing = localStorage.getItem('userMedia');
-    const parsed = existing ? JSON.parse(existing) : [];
-
-    if (parsed.some(item => item.id === media.id)) {
-      alert("This item is already in your collection.");
+    if (!userId) {
+      alert('You must be logged in to add media.');
       return;
     }
 
-    const itemToAdd = {
-      ...media,
-      comment: comments[media.id] || '',
-      status: media.type === 'book' || media.type === 'manga' ? 'not read' : 'not watched',
-    };
+    const reviewBody = comments[media.id]?.trim();
+    if (!reviewBody) {
+      alert('Please enter a comment before adding.');
+      return;
+    }
 
-    const updated = [...parsed, itemToAdd];
-    localStorage.setItem('userMedia', JSON.stringify(updated));
-    alert('Added to your collection!');
-    navigate('/');
+    try {
+      // 1. Create review
+      const payload = {
+        reviewBody,
+        userId,
+        [getMediaIdKey(media.type)]: getMediaId(media),
+      };
+      const reviewRes = await axios.post(`http://localhost:8080/api/v2/reviews/${media.type}s`, payload);
+
+      // 2. Add media ID to user collection
+      await axios.post(`http://localhost:8080/api/v2/users/${userId}/collection/add`, {
+        mediaType: media.type,
+        mediaId: getMediaId(media),
+      });
+
+      alert('Successfully added review and added to your collection.');
+      navigate('/');
+    } catch (err) {
+      console.error('Error adding media:', err);
+      alert('Something went wrong while adding the media.');
+    }
+  };
+
+  const getMediaIdKey = (type) => {
+    switch (type) {
+      case 'movie':
+      case 'show':
+        return 'imdbId';
+      case 'book':
+        return 'isbn';
+      case 'anime':
+      case 'manga':
+        return 'malId';
+      default:
+        return 'id';
+    }
+  };
+
+  const getMediaId = (media) => {
+    const key = getMediaIdKey(media.type);
+    return media[key];
   };
 
   const handleCommentChange = (id, text) => {
     setComments(prev => ({ ...prev, [id]: text }));
   };
 
-  const filtered = allMedia.filter(item =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const filtered = allMedia
+    .filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      const aCommented = comments[a.id]?.trim() ? -1 : 1;
+      const bCommented = comments[b.id]?.trim() ? -1 : 1;
+      return aCommented - bCommented;
+    });
   const getKey = (media) => {
     switch (media.type) {
       case 'book': return `${media.isbn}-book`;
@@ -144,3 +181,4 @@ const AddMediaPage = () => {
 };
 
 export default AddMediaPage;
+
