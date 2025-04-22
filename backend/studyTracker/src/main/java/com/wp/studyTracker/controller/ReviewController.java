@@ -22,35 +22,60 @@ public class ReviewController {
     @PostMapping("/movies")
     public ResponseEntity<Review> createMovieReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
-                Movie.class, "imdbId", payload.get("imdbId"), payload.get("reviewBody"));
+                Movie.class,
+                "imdbId",
+                payload.get("imdbId"),
+                payload.get("reviewBody"),
+                payload.get("userId")
+        );
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PostMapping("/animes")
     public ResponseEntity<Review> createAnimeReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
-                Anime.class, "malId", payload.get("malId"), payload.get("reviewBody"));
+                Anime.class,
+                "malId",
+                payload.get("malId"),
+                payload.get("reviewBody"),
+                payload.get("userId")
+        );
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PostMapping("/mangas")
     public ResponseEntity<Review> createMangaReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
-                Manga.class, "malId", payload.get("malId"), payload.get("reviewBody"));
+                Manga.class,
+                "malId",
+                payload.get("malId"),
+                payload.get("reviewBody"),
+                payload.get("userId")
+        );
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PostMapping("/books")
     public ResponseEntity<Review> createBookReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
-                Book.class, "isbn", payload.get("isbn"), payload.get("reviewBody"));
+                Book.class,
+                "isbn",
+                payload.get("isbn"),
+                payload.get("reviewBody"),
+                payload.get("userId")
+        );
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PostMapping("/shows")
     public ResponseEntity<Review> createShowReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
-                Show.class, "imdbId", payload.get("imdbId"), payload.get("reviewBody"));
+                Show.class,
+                "imdbId",
+                payload.get("imdbId"),
+                payload.get("reviewBody"),
+                payload.get("userId")
+        );
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 }
