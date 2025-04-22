@@ -17,6 +17,7 @@ public class Review {
     private ObjectId id;
 
     private String body;
+    private String userId;
 
     public Review(String body) {
         this.body = body;
@@ -36,5 +37,13 @@ public class Review {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

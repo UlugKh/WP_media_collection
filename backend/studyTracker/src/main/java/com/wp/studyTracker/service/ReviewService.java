@@ -32,7 +32,7 @@ public class ReviewService {
 
         mongoTemplate.update(mediaClass)
                 .matching(Criteria.where(idFieldName).is(idValue))
-                .apply(new Update().push("reviewIds", review))
+                .apply(new Update().push("reviewIds").value(review.getId()))
                 .first();
 
         return review;

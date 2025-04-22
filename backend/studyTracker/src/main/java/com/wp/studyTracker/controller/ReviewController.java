@@ -26,14 +26,14 @@ public class ReviewController {
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
-    @PostMapping("/anime")
+    @PostMapping("/animes")
     public ResponseEntity<Review> createAnimeReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
                 Anime.class, "malId", payload.get("malId"), payload.get("reviewBody"));
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
-    @PostMapping("/manga")
+    @PostMapping("/mangas")
     public ResponseEntity<Review> createMangaReview(@RequestBody Map<String, String> payload) {
         Review review = reviewService.createReviewForMedia(
                 Manga.class, "malId", payload.get("malId"), payload.get("reviewBody"));
