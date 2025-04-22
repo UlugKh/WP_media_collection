@@ -19,14 +19,12 @@ const FooterSection = () => {
             title: "Support",
             links: ["Contact Us"],
         },
-        {
-            title: "Subscription",
-            links: ["Plans", "Features"],
-        },
+
     ];
 
     const socialIcons = [
         {
+
             src: "https://c.animaapp.com/m9mpcg8cxzUWoO/img/icon-7.svg",
             alt: "Icon",
         },
@@ -74,7 +72,7 @@ const FooterSection = () => {
                 <div className="footer-separator"></div>
                 <div className="footer-bottom-content">
                     <div className="footer-copyright">
-                        @2023 streamvib, All Rights Reserved
+                        @2025 WP_Media_Collection, All Rights Reserved
                     </div>
                     <div className="footer-legal">
                         {legalLinks.map((link, index) => (
