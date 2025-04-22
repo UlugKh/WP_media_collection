@@ -1,38 +1,208 @@
-.App {
-  text-align: center;
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: lightblue;
+  color: black;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+header {
+  background-color: #111;
+  padding: 1rem 2rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid #e60000;
+}
+
+header nav a {
+  color: rgba(210, 180, 140, 0.7);
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+header nav a:hover {
+  color: #e60000;
+}
+
+
+.scroll-button {
+  position: absolute;
+  left: 0;
+  top: 35%;
+  z-index: 10;
+  background-color: rgba(111, 79, 31, 0.7);
+  border: 2px solid rgba(210, 180, 140, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease-in-out, box-shadow 0.3s;
+}
+
+/* Button hover effect */
+.scroll-button:hover {
+  background-color: rgba(139, 69, 19, 0.9);  /* More opaque brown on hover */
+  transform: scale(1.1);                       /* Slightly grow the button */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  /* Add shadow effect */
+  border-color: rgba(255, 255, 255, 0.8);     /* Slightly transparent white border */
+}
+
+
+.scroll-button::before {
+  content: ' ‹ ';
+  font-size: 1.5rem;
+  color: beige;
+  font-weight: bold;
+}
+
+
+button,
+.button {
+  background-color: #e60000;
   color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover,
+.button:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.tag {
+  background-color: #222;
+  color: #e60000;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  margin: 0.2rem;
+  display: inline-block;
+}
+
+
+.section-title {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem 1rem;
+  border-left: 4px solid #e60000;
+  padding-left: 1rem;
+}
+
+
+.section-wrapper {
+  width: 100%;
+  padding: 2rem;
+}
+
+
+.content-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 2rem;
+}
+
+
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: #111;
+  color: #777;
+  border-top: 2px solid #e60000;
+}
+
+
+
+.card img {
+  width: 100%;
+  display: block;
+  border-bottom: 2px solid #e60000;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.tag {
+  background-color: #222;
+  color: #e60000;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  margin: 0.2rem;
+  display: inline-block;
+}
+
+
+.card {
+  background-color: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1rem;
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+
+.card-content p {
+  color: black;
+}
+
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(229, 0, 0, 0.3);
+}
+
+.book-card {
+  background-color: #e0f7fa;
+  color: #111;
+}
+
+.movie-card {
+  background-color: #fff3e0;
+  color: #111;
+}
+
+.comment-section {
+  margin-top: 1rem;
+}
+
+.comment-box {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.action-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }

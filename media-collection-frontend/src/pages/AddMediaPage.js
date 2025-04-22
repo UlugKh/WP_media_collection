@@ -9,19 +9,17 @@ const AddMediaPage = () => {
   const [comments, setComments] = useState({});
   const navigate = useNavigate();
 
+  const loggedInUserId = localStorage.getItem('loggedInUserId');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [mediaRes, userMediaRes] = await Promise.all([
-          getAllMedia()
-        ]);
-
+        const mediaRes = await getAllMedia();
         const { books = [], movies = [], shows = [], mangas = [], animes = [] } = mediaRes.data;
 
         const withType = (items, type) =>
           items.map(item => ({
             ...item,
-            id: item.id || (typeof item._id === 'object' ? item._id.$oid : item._id?.toString?.()),
             type,
           }));
 
@@ -34,7 +32,6 @@ const AddMediaPage = () => {
         ];
 
         setAllMedia(combined);
-        setUserMedia(userMediaRes.data || []);
       } catch (error) {
         console.error('Error loading media:', error);
       }
@@ -44,8 +41,10 @@ const AddMediaPage = () => {
   }, []);
 
   const handleAdd = async (media) => {
-    const alreadyAdded = userMedia.find(item => item.id === media.id);
-    if (alreadyAdded) {
+    const existing = localStorage.getItem('userMedia');
+    const parsed = existing ? JSON.parse(existing) : [];
+
+    if (parsed.some(item => item.id === media.id)) {
       alert("This item is already in your collection.");
       return;
     }
@@ -56,14 +55,10 @@ const AddMediaPage = () => {
       status: media.type === 'book' || media.type === 'manga' ? 'not read' : 'not watched',
     };
 
-    try {
-      await createMedia(itemToAdd);
-      alert('Added to your collection!');
-      navigate('/');
-    } catch (error) {
-      console.error('Failed to add item:', error);
-      alert('Something went wrong while adding the item.');
-    }
+    const updated = [...parsed, itemToAdd];
+    localStorage.setItem('userMedia', JSON.stringify(updated));
+    alert('Added to your collection!');
+    navigate('/');
   };
 
   const handleCommentChange = (id, text) => {
@@ -74,8 +69,19 @@ const AddMediaPage = () => {
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const getKey = (media) => {
+    switch (media.type) {
+      case 'book': return `${media.isbn}-book`;
+      case 'movie': return `${media.imdbId}-movie`;
+      case 'show': return `${media.imdbId}-show`;
+      case 'anime': return `${media.malId}-anime`;
+      case 'manga': return `${media.malId}-manga`;
+      default: return `${media.id}-${media.type}`;
+    }
+  };
+
   return (
-    <div>
+    <div style={{ padding: '2rem' }}>
       <h2>Search & Add Media</h2>
       <input
         type="text"
@@ -87,26 +93,49 @@ const AddMediaPage = () => {
 
       {filtered.length === 0 && <p>No media found.</p>}
 
-      <div className="media-list">
+      <div className="media-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
         {filtered.map((media) => (
           <div
-            key={media.id + media.title}
+            key={getKey(media)}
             style={{
               border: '1px solid #ccc',
               borderRadius: '8px',
-              padding: '1rem',
-              marginBottom: '1rem',
+              width: '180px',
+              background: '#fff',
+              overflow: 'hidden'
             }}
           >
-            <h3>{media.title} ({media.type})</h3>
-            <textarea
-              rows={2}
-              placeholder="Add a comment..."
-              value={comments[media.id] || ''}
-              onChange={(e) => handleCommentChange(media.id, e.target.value)}
-              style={{ width: '100%', marginBottom: '0.5rem' }}
+            <img
+              src={media.poster || media.coverImage}
+              alt={media.title}
+              style={{ width: '100%', height: '270px', objectFit: 'cover' }}
             />
-            <button onClick={() => handleAdd(media)}>+ Add to My Collection</button>
+            <div style={{ padding: '0.5rem' }}>
+              <h3 style={{ fontSize: '1rem', margin: '0 0 0.25rem' }}>{media.title}</h3>
+              <p style={{ fontSize: '0.8rem', margin: '0 0 0.25rem' }}><strong>Type:</strong> {media.type}</p>
+              {media.genres?.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '0.25rem' }}>
+                  {media.genres.slice(0, 3).map(genre => (
+                    <span key={genre} style={{ fontSize: '0.7rem', background: '#eee', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>{genre}</span>
+                  ))}
+                </div>
+              )}
+              {media.author && <p style={{ fontSize: '0.8rem' }}><strong>Author:</strong> {media.author}</p>}
+              {(media.releaseDate || media.publishedDate) && (
+                <p style={{ fontSize: '0.8rem' }}><strong>Date:</strong> {media.releaseDate || media.publishedDate}</p>
+              )}
+              {media.comment && (
+                <p style={{ fontSize: '0.75rem', fontStyle: 'italic', color: '#555' }}>Comment: {media.comment}</p>
+              )}
+              <textarea
+                rows={2}
+                placeholder="Add a comment..."
+                value={comments[media.id] || ''}
+                onChange={(e) => handleCommentChange(media.id, e.target.value)}
+                style={{ width: '100%', margin: '0.25rem 0' }}
+              />
+              <button onClick={() => handleAdd(media)} style={{ width: '100%' }}>+ Add to My Collection</button>
+            </div>
           </div>
         ))}
       </div>

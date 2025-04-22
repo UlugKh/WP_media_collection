@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getAllMedia } from '../services/Api';
+import ReviewForm from '../components/ReviewForm';
 
 const MediaDetailPage = () => {
   const { id } = useParams();
@@ -119,6 +120,8 @@ const MediaDetailPage = () => {
           </div>
         </div>
       )}
+
+
     </div>
   );
 };

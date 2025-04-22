@@ -1,5 +1,7 @@
 package com.wp.studyTracker.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.wp.studyTracker.ObjectIdToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,27 +10,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Review {
 
     @Id
+    @JsonSerialize(using = ObjectIdToStringSerializer.class)
     private ObjectId id;
+
     private String body;
     private String userId;
 
-    // No-arg constructor (required by Spring and MongoDB)
-    public Review() {
-    }
+    public Review() {}
 
-    // All-args constructor
     public Review(ObjectId id, String body, String userId) {
         this.id = id;
         this.body = body;
         this.userId = userId;
     }
 
-    // Constructor for just the body (if needed)
     public Review(String body) {
         this.body = body;
     }
 
-    // Getters and setters
     public ObjectId getId() {
         return id;
     }
