@@ -189,13 +189,13 @@ const HomePage = () => {
 
 
     return (
-        <div>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem' }}>
             {['book', 'movie', 'anime', 'manga', 'show'].map((type) => (
                 <RenderSection
                     key={type}
                     type={type}
                     label={type.charAt(0).toUpperCase() + type.slice(1)}
-                    emoji="📚" // Just an example emoji, you can customize
+                    emoji="📚" // You can customize this per type if you want
                 />
             ))}
         </div>

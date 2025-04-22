@@ -1,62 +1,90 @@
-.navbar{
-    align-items: center;
-    height: 10vh;
-    margin: 0;
-    position: sticky;
-    top: 0;
-}
-.container{
-    margin:0;
-    padding:0;
-    display:flex;
-    justify-content: space-between;
-}
-a{
-    text-decoration: none;
-    font-size: 16px;
-    color: black;
-    margin-left: auto;
-}
-
-.container-right{
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-}
-
-.container-left{
+.navbar {
+    background-color: brown;
     display: flex;
     align-items: center;
-    justify-content: center;
+    height: 10vh;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #e60000;
 }
 
-.Register{
-    cursor: pointer;
-    padding : 10px 20px;
-    text-align: center;
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.container-left,
+.container-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Links */
+a {
+    text-decoration: none;
     font-size: 16px;
-    margin-left: 20px;
-}
-.Login{
-    border-radius: 50px;
-    color : black;
-    background : white;
-}
-.Login:hover{
-    background : white;
-}
-.Signup{
-    border-radius: 50px;
-    color : black;
-    background : white;
+    color: white;
+    transition: color 0.3s ease;
 }
 
-.Home{
-    margin : 0;
-    border-radius: 5px;
-    border : 1px solid black;
+a:hover {
+    color: #e60000;
 }
 
-.AddMediaBtn{
-    margin-right: 15px;
+/* Buttons Shared */
+.Register,
+.Login,
+.Signup,
+.Home,
+.AddMediaBtn {
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+}
+
+/* Specific Buttons */
+.Login,
+.Signup {
+    background-color: white;
+    color: black;
+}
+
+.Login:hover,
+.Signup:hover {
+    background-color: #e60000;
+    color: white;
+    transform: scale(1.05);
+}
+
+.Home {
+    background-color: #e60000;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.Home:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+.AddMediaBtn {
+    background-color: transparent;
+    border: 1px solid #e60000;
+    color: black;
+}
+
+.AddMediaBtn:hover {
+    background-color: #e60000;
+    color: white;
+    transform: scale(1.05);
 }

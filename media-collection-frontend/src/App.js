@@ -7,6 +7,7 @@ import EditMediaPage from './pages/EditMediaPage';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import MediaDetailPage from './pages/MediaDetailPage';
+import FooterSection from "./components/FooterSection";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/media/:type/:id" element={<MediaDetailPage />} />
       </Routes>
+        <FooterSection />
     </>
   );
 }
